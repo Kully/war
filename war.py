@@ -69,10 +69,6 @@ def war_turn_states(deck_one, deck_two, max_iterations, debug=False):
     turn_states = []
     iteration = 0
     while (iteration <= max_iterations and len(deck_one) != 0 and len(deck_two) != 0):
-        # if len(deck_one) + len(deck_two) == 52:
-        #     state = make_uid(deck_one, deck_two)
-        #     turn_states.append(state)
-
         if debug:
             print(f"iter [{str(iteration).zfill(2)}]")
             print(f"  deck_one len: {len(deck_one)}")
