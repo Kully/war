@@ -1,3 +1,4 @@
+SEP_ICON = ":"
 INT_HEX_LOOKUP = {
     0: "0",
     1: "1",
@@ -13,9 +14,8 @@ INT_HEX_LOOKUP = {
     11: "b",
     12: "c",
 }
-
 HEX_INT_LOOKUP = {
-    v:k for v,k in zip(INT_HEX_LOOKUP.values(), INT_HEX_LOOKUP.keys())
+    (value, key) for (key, value) in INT_HEX_LOOKUP.items()
 }
 
 
@@ -48,7 +48,7 @@ def deserialize(deck_string):
 
 
 def make_uid(deck_one, deck_two):
-    return ":".join([serialize(deck_one), serialize(deck_two)])
+    return f"{SEP_ICON}".join([serialize(deck_one), serialize(deck_two)])
 
 
 def war_turn_states(deck_one, deck_two, max_iterations, debug=False):
@@ -68,13 +68,13 @@ def war_turn_states(deck_one, deck_two, max_iterations, debug=False):
     bin_of_cards = []
     turn_states = []
     iteration = 0
-    while (iteration <= max_iterations and len(deck_one) != 0 and len(deck_two) != 0):
+    done = False
+    while not done:
         if debug:
             print(f"iter [{str(iteration).zfill(2)}]")
             print(f"  deck_one len: {len(deck_one)}")
             print(f"  deck_two len: {len(deck_two)}")
             print(f"  bin_of_cards len: {len(bin_of_cards)}")
-            print(f"  Assertion: {len(bin_of_cards) + len(deck_one) + len(deck_two) == 52}")
             print("")
 
         if deck_one[0] == deck_two[0]:
@@ -95,10 +95,20 @@ def war_turn_states(deck_one, deck_two, max_iterations, debug=False):
             deck_two += bin_of_cards
             bin_of_cards = []
 
+        done = (
+            iteration > max_iterations or
+            ("" in make_uid(deck_one, deck_two).split(":") and
+            (len(deck_one) == 0 or len(deck_two) == 0))
+        )
+        if done == True:
+            if len(bin_of_cards) > 0 and len(deck_one) == 0:
+                deck_two.extend(bin_of_cards)
+                bin_of_cards = []
+            elif len(bin_of_cards) > 0 and len(deck_two) == 0:
+                deck_one.extend(bin_of_cards)
+                bin_of_cards = []
 
-        if len(deck_one) + len(deck_two) == 52:
-            state = make_uid(deck_one, deck_two)
-            turn_states.append(state)
-
+        state = make_uid(deck_one, deck_two)
+        turn_states.append(state)
         iteration += 1
     return turn_states
