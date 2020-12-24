@@ -1,5 +1,3 @@
-MAX_ITERATIONS = 40000
-
 INT_HEX_LOOKUP = {
     0: "0",
     1: "1",
@@ -70,7 +68,7 @@ def war_turn_states(deck_one, deck_two, max_iterations, debug=False):
     bin_of_cards = []
     turn_states = []
     iteration = 0
-    while (iteration <= MAX_ITERATIONS and len(deck_one) != 0 and len(deck_two) != 0):
+    while (iteration <= max_iterations and len(deck_one) != 0 and len(deck_two) != 0):
         # if len(deck_one) + len(deck_two) == 52:
         #     state = make_uid(deck_one, deck_two)
         #     turn_states.append(state)
