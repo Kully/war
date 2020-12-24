@@ -14,9 +14,7 @@ INT_HEX_LOOKUP = {
     11: "b",
     12: "c",
 }
-HEX_INT_LOOKUP = {
-    (value, key) for (key, value) in INT_HEX_LOOKUP.items()
-}
+HEX_INT_LOOKUP = {value:key for key,value in INT_HEX_LOOKUP.items()}
 
 
 def make_deck():
